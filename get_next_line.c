@@ -25,7 +25,8 @@ char	*get_next_line(int fd)
 	{
 		if (stash && ft_strchr(stash, '\n'))
 		{
-			line = ft_substr(stash, 0, strlen_x(stash, 0));
+			stash = ft_strjoin(stash, buff);
+			line = ft_substr(stash, 0, strlen_x(stash, '\n'));
 			stash = ft_substr(stash, strlen_x(stash, '\n') + 1, strlen_x(stash, 0));
 			return (line);
 		}
@@ -65,11 +66,13 @@ int	main(int ac, char **av)
 	char	*line;
 
 	(void)ac;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break;
-		printf("%s", line);
-	}
+	line = get_next_line(fd);
+	printf("%s\n", line);
+	printf("----- line 1 ^ -----\n");
+	line = get_next_line(fd);
+	printf("%s\n", line);
+	printf("----- line 2 ^ -----\n");
+	line = get_next_line(fd);
+	printf("%s\n", line);
+	printf("----- line 3 ^ -----\n");
 }
