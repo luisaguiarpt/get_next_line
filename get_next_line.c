@@ -31,13 +31,11 @@ char	*get_next_line(int fd)
 			return (line);
 		}
 		else if (stash && !ft_strchr(stash, '\n'))
-		{
 			stash = ft_strjoin(stash, buff); 
-		}
-		else
-		{
+		else if (!stash)
 			stash = ft_strdup(buff);
-		}
+		else
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -75,4 +73,10 @@ int	main(int ac, char **av)
 	line = get_next_line(fd);
 	printf("%s\n", line);
 	printf("----- line 3 ^ -----\n");
+	line = get_next_line(fd);
+	printf("%s\n", line);
+	printf("----- line 4 ^ -----\n");
+	line = get_next_line(fd);
+	printf("%s\n", line);
+	printf("----- line ? ^ -----\n");
 }
