@@ -14,7 +14,15 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE=42
+#  define BUFFER_SIZE 42
 # endif
+
+#include <stddef.h>
+
+size_t	strlen_x(const char *str, char x);
+char	*ft_strdup(char *str);
+char	*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(const char *s, unsigned int start, size_t len);
 
 #endif

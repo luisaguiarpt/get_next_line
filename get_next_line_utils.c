@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
@@ -10,14 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-size_t	ft_strlen(const char *str)
+#include <stdlib.h>
+#include <stddef.h>
+
+size_t	strlen_x(const char *str, char x)
 {
 	size_t	len;
 
 	if (!str)
 		return (-1);
 	len = 0;
-	while (str[len])
+	while (str[len] != x)
 		len++;
 	return (len);
 }
@@ -32,7 +35,7 @@ char	*ft_strdup(char *str)
 	if (!str)
 		len = 0;
 	else
-		len	= ft_strlen(str);
+		len	= strlen_x(str, '\0');
 	dup = malloc((len + 1) * sizeof(char));
 	if (!dup)
 		return (NULL);
@@ -53,7 +56,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
+	len = strlen_x(s1, '\0') + strlen_x(s2, '\0') + 1;
 	new = malloc(sizeof(char) * len);
 	if (!new)
 		return (NULL);
@@ -64,4 +67,42 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		*new++ = *s2++;
 	*new = 0;
 	return (ptr);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	uc;
+	
+	uc = (unsigned char)c;
+	while (*s)
+	{
+		if (*s == uc)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == uc)
+		return ((char *)s);
+	return (NULL);
+}
+
+char	*ft_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	i;
+
+	i = 0;
+	if (start >= strlen_x(s, '\0'))
+		len = 0;
+	if (len > strlen_x(s, '\0') - start)
+		len = strlen_x(s, '\0') - start;
+	sub = malloc(sizeof(char) * (len + 1));
+	if (!sub)
+		return (NULL);
+	while (i < len && s[i + start])
+	{
+		sub[i] = s[i + start];
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
 }

@@ -11,23 +11,36 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*line;
 	char		*buff;
-	size_t		nbytes;
 
-	c = 0;
-	stash = NULL;
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	nbytes = read(fd, buff, BUFFER_SIZE);
-	stash = add_to_stash(stash, buff);
+	while (read(fd, buff, BUFFER_SIZE) > 0 || ft_strchr(stash, '\n'))
+	{
+		if (stash && ft_strchr(stash, '\n'))
+		{
+			line = ft_substr(stash, 0, strlen_x(stash, 0));
+			stash = ft_substr(stash, strlen_x(stash, '\n') + 1, strlen_x(stash, 0));
+			return (line);
+		}
+		else if (stash && !ft_strchr(stash, '\n'))
+		{
+			stash = ft_strjoin(stash, buff); 
+		}
+		else
+		{
+			stash = ft_strdup(buff);
+		}
+	}
+	return (NULL);
 }
-
+/*
 const char	*add_to_stash(static char *stash, char *buff)
 {
 	char	*temp;
@@ -42,7 +55,7 @@ const char	*add_to_stash(static char *stash, char *buff)
 	stash = ft_strjoin(stash, buff);
 	return (stash);
 }
-
+*/
 #include <fcntl.h>
 #include <stdio.h>
 
@@ -50,9 +63,13 @@ int	main(int ac, char **av)
 {
 	int		fd = open(av[1], O_RDONLY);
 	char	*line;
-	while (line = get_next_line(fd))
+
+	(void)ac;
+	while (1)
 	{
+		line = get_next_line(fd);
+		if (!line)
+			break;
 		printf("%s", line);
 	}
-
 }
