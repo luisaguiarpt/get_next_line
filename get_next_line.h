@@ -6,23 +6,24 @@
 /*   By: ldias-da <ldias-da@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:28:58 by ldias-da          #+#    #+#             */
-/*   Updated: 2025/04/17 11:45:59 by ldias-da         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:15:47 by ldias-da         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# include <stdlib.h>
+
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE  10
 # endif
 
-#include <stddef.h>
-
-size_t	strlen_x(const char *str, char x);
-char	*ft_strdup(char *str);
-char	*ft_strjoin(const char *s1, const char *s2);
+char	*get_next_line(int fd);
+char	*store_in_saf(char *saf, char *buf, ssize_t nbytes);
+char	*put_line(char *saf);
+char	*move_saf(char *saf);
 char	*ft_strchr(const char *s, int c);
-char	*ft_substr(const char *s, unsigned int start, size_t len);
+size_t	ft_strlen(const char *str);
 
 #endif
