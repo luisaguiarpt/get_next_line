@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldias-da <ldias-da@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 11:35:34 by ldias-da          #+#    #+#             */
-/*   Updated: 2025/04/22 23:19:46 by ldias-da         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:26:37 by ldias-da         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*saf;
+	static char	*saf[1024];
 	char		*buf;
 	ssize_t		nbytes;
 
@@ -23,22 +23,22 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	buf[BUFFER_SIZE] = 0;
-	while (!ft_strchr(saf, '\n'))
+	while (!ft_strchr(saf[fd], '\n'))
 	{
 		nbytes = read(fd, buf, BUFFER_SIZE);
-		if (nbytes < 1 && (!saf || saf[0] == 0 || nbytes == -1))
+		if (nbytes < 1 && (!saf[fd] || saf[fd] == 0 || nbytes == -1))
 		{
-			free(saf);
-			saf = NULL;
+			free(saf[fd]);
+			saf[fd] = NULL;
 			free(buf);
 			return (NULL);
 		}
 		else if (nbytes < 1)
 			break ;
-		saf = store_in_saf(saf, buf, nbytes);
+		saf[fd] = store_in_saf(saf[fd], buf, nbytes);
 	}
 	free(buf);
-	return (put_line(saf));
+	return (put_line(saf[fd]));
 }
 
 char	*store_in_saf(char *saf, char *buf, ssize_t nbytes)
@@ -72,7 +72,7 @@ char	*put_line(char *saf)
 	char	*line;
 
 	i = 0;
-	while (saf[i])
+	while (saf && saf[i])
 	{
 		if (saf[i] == '\n' || saf[i + 1] == 0)
 		{
@@ -111,7 +111,7 @@ char	*move_saf(char *saf)
 	saf[dest] = 0;
 	return (saf);
 }
-/*
+
 #include <fcntl.h>
 #include <stdio.h>
 
@@ -128,15 +128,15 @@ int	main(int ac, char **av)
 		free(line);
 	}	
 	close(fd);
-	fd = open(av[1], O_RDONLY);
-	while ((line = get_next_line(fd)))
-	{
-		printf("%s", line);
-		printf("----------- line ^ ------------\n");
-		free(line);
-	}	
-	printf("%s", line);
-	printf("----------- line ^ ------------\n");
-	free(line);
+//	fd = open(av[1], O_RDONLY);
+//	while ((line = get_next_line(fd)))
+//	{
+//		printf("%s", line);
+//		printf("----------- line ^ ------------\n");
+//		free(line);
+//	}	
+//	printf("%s", line);
+//	printf("----------- line ^ ------------\n");
+//	free(line);
 }
-*/
+

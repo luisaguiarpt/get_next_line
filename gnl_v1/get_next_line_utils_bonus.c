@@ -1,29 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldias-da <ldias-da@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 11:28:58 by ldias-da          #+#    #+#             */
-/*   Updated: 2025/04/22 23:15:47 by ldias-da         ###   ########.fr       */
+/*   Created: 2025/04/17 11:47:25 by ldias-da          #+#    #+#             */
+/*   Updated: 2025/04/22 13:09:11 by ldias-da         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# include <stdlib.h>
+size_t	ft_strlen(const char *str)
+{
+	size_t	len;
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE  10
-# endif
+	if (!str)
+		return (0);
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
 
-char	*get_next_line(int fd);
-char	*store_in_saf(char *saf, char *buf, ssize_t nbytes);
-char	*put_line(char *saf);
-char	*move_saf(char *saf);
-char	*ft_strchr(const char *s, int c);
-size_t	ft_strlen(const char *str);
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	uc;
 
-#endif
+	uc = (unsigned char)c;
+	if (!s)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == uc)
+			return ((char *)s);
+		s++;
+	}
+	if (*s == uc)
+		return ((char *)s);
+	return (NULL);
+}
