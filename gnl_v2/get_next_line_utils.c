@@ -6,32 +6,40 @@
 /*   By: ldias-da <ldias-da@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 19:01:13 by ldias-da          #+#    #+#             */
-/*   Updated: 2025/04/24 16:13:56 by ldias-da         ###   ########.fr       */
+/*   Updated: 2025/04/25 16:04:27 by ldias-da         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*put_line(char *line, char *buf)
+char	*add_line(char *line, char *buf)
 {
 	char	*new;
-	ssize_t	i;
+	size_t	i;
 
 	i = 0;
-	while (buf && buf[i] != '\n')
+	while (buf[i] && buf[i] != '\n')
 		i++;
-	new = malloc(sizeof(char) * (ft_strlen(line) + i + 1));
+	new = malloc(sizeof(char) * (ft_strlen(line) + (buf[i] == '\n') + i + 1));
 	if (!new)
 		return (NULL);
-	i = -1;
-	while (line && line[++i])
-		new[i] == line[i];
-	
-	shift_buf(buf, n);
-
+	i = 0;
+	while (line && line[i])
+	{
+		new[i] = line[i];
+		i++;
+	}
+	while (*buf && *buf != '\n')
+		new[i++] = *buf++;
+	if (*buf == '\n')
+		new[i++] = '\n';
+	new[i] = 0;
+	if (line)
+		free(line);
+	return (new);
 }
 
-void	shift_buf(char *buf, ssize_t n)
+void	shift_buf(char *buf)
 {
 	size_t	i;
 	size_t	dest;
@@ -44,7 +52,7 @@ void	shift_buf(char *buf, ssize_t n)
 	src = i + (buf[i] == '\n');
 	while (buf[i])
 		i++;
-	while (src <= i && n--)
+	while (src <= i)
 		buf[dest++] = buf[src++];
 	buf[dest] = 0;
 }
